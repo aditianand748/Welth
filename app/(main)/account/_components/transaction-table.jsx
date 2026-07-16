@@ -38,14 +38,49 @@ const TransactionTable = ({ transactions }) => {
     const filteredAndSortedTransactions = useMemo(() => {
         let result = [...transactions];
 
+        if (searchTerm) {
+            const searchLower = searchTerm.toLowerCase();
+            result = result.filter((transaction) =>
+                transaction.description?.toLowerCase().includes(searchLower)
+            );
+        }
+        if (typeFilter) {
+            result = result.filter((transaction) => transaction.type === typeFilter);
+        }
+
+        // Apply recurring filter
+        if (recurringFilter) {
+            result = result.filter((transaction) => {
+                if (recurringFilter === "recurring") return transaction.isRecurring;
+                return !transaction.isRecurring;
+            });
+        }
+
+        // Apply sorting
+        result.sort((a, b) => {
+            let comparison = 0;
+
+            switch (sortConfig.field) {
+                case "date":
+                    comparison = new Date(a.date) - new Date(b.date);
+                    break;
+                case "amount":
+                    comparison = a.amount - b.amount;
+                    break;
+                case "category":
+                    comparison = a.category.localeCompare(b.category);
+                    break;
+                default:
+                    comparison = 0;
+            }
+
+            return sortConfig.direction === "asc" ? comparison : -comparison;
+        });
+
         return result;
-    }, [
-        transactions,
-        searchTerm,
-        typeFilter,
-        recurringFilter,
-        sortConfig,
-    ]);
+    }, [transactions, searchTerm, typeFilter, recurringFilter, sortConfig]);
+
+
 
     const handleSort = (field) => {
         setSortConfig((current) => ({
