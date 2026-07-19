@@ -5,6 +5,7 @@ import { Plus } from 'lucide-react'
 import React from 'react'
 import AccountCard from './_components/account-card'
 import { getCurrentBudget } from '@/actions/budget'
+import { BudgetProgress } from './_components/budget-progress'
 
 
 async function DashboardPage() {
@@ -27,10 +28,10 @@ async function DashboardPage() {
             />
 
             {/* Dashboard Overview */}
-            <DashboardOverview
+            {/* <DashboardOverview
                 accounts={accounts}
                 transactions={transactions || []}
-            />
+            /> */}
             <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3'>
                 <CreateAccountDrawer>
                     <Card className="hover:shadow-md transition-shadow cursor-pointer border-dashed">
