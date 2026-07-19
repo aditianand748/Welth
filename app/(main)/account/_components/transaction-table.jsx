@@ -1,5 +1,6 @@
 "use client";
 
+import { bulkDeleteTransactions } from '@/actions/accounts';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -9,10 +10,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { categoryColors } from '@/data/categories';
+import useFetch from '@/hooks/use-fetch';
 import { format } from 'date-fns';
 import { ChevronDown, ChevronUp, Clock, MoreHorizontal, Search, Trash, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { BarLoader } from 'react-spinners';
+import { toast } from 'sonner';
 
 const RECURRING_INTERVALS = {
     DAILY: "Daily",
@@ -34,6 +38,11 @@ const TransactionTable = ({ transactions }) => {
     const [typeFilter, setTypeFilter] = useState("");
     const [recurringFilter, setRecurringFilter] = useState("");
 
+    const {
+        loading: deleteLoading,
+        fn: deleteFn,
+        data: deleted,
+    } = useFetch(bulkDeleteTransactions);
 
     const filteredAndSortedTransactions = useMemo(() => {
         let result = [...transactions];
@@ -105,10 +114,21 @@ const TransactionTable = ({ transactions }) => {
     };
 
     const handleBulkDelete = async () => {
-
+        if (
+            !window.confirm(
+                `Are you sure you want to delete ${selectedIds.length} transactions?`
+            )
+        )
+            return;
 
         deleteFn(selectedIds);
     }
+
+    useEffect(() => {
+        if (deleted && !deleteLoading) {
+            toast.error("Transactions deleted successfully");
+        }
+    }, [deleted, deleteLoading]);
 
     const handleClearFilters = () => {
         setSearchTerm("");
@@ -119,6 +139,9 @@ const TransactionTable = ({ transactions }) => {
 
     return (
         <div className='space-y-4'>
+            {deleteLoading && (
+                <BarLoader className='mt-4' width={"100%"} color="#9333ea" />
+            )}
             {/*Filters */}
             <div className='flex flex-col sm:flex-row gap-4'>
                 <div className='relative flex-1'>
