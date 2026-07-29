@@ -12,10 +12,10 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { updateBudget } from "@/actions/budget";
+import { Progress } from "@/components/ui/progress";
 
 export function BudgetProgress({ initialBudget, currentExpenses }) {
     const [isEditing, setIsEditing] = useState(false);

@@ -75,7 +75,7 @@ export async function updateBudget(amount) {
     if (!user) throw new Error("User not found");
 
     // Update or create budget
-    const budget = await db.budget.upsert({
+    const budget = await db.budget.update({
       where: {
         userId: user.id,
       },
