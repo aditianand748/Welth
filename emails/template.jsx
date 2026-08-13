@@ -1,6 +1,41 @@
 import { Button, Html, Head, Body, Section, Preview, Container, Heading, Text } from "react-email";
 import * as React from "react";
 
+
+const PREVIEW_DATA = {
+    monthlyReport: {
+        userName: "John Doe",
+        type: "monthly-report",
+        data: {
+            month: "December",
+            stats: {
+                totalIncome: 5000,
+                totalExpenses: 3500,
+                byCategory: {
+                    housing: 1500,
+                    groceries: 600,
+                    transportation: 400,
+                    entertainment: 300,
+                    utilities: 700,
+                },
+            },
+            insights: [
+                "Your housing expenses are 43% of your total spending - consider reviewing your housing costs.",
+                "Great job keeping entertainment expenses under control this month!",
+                "Setting up automatic savings could help you save 20% more of your income.",
+            ],
+        },
+    },
+    budgetAlert: {
+        userName: "John Doe",
+        type: "budget-alert",
+        data: {
+            percentageUsed: 85,
+            budgetAmount: 4000,
+            totalExpenses: 3400,
+        },
+    },
+};
 export default function EmailTemplate({
     userName = "",
     type = "budget-alert",
@@ -64,11 +99,6 @@ export default function EmailTemplate({
                                 ))}
                             </Section>
                         )}
-
-                        <Text style={styles.footer}>
-                            Thank you for using Welth. Keep tracking your finances for better
-                            financial health!
-                        </Text>
                     </Container>
                 </Body>
             </Html>
@@ -84,7 +114,7 @@ export default function EmailTemplate({
                         <Heading style={styles.title}>Budget Alert</Heading>
                         <Text style={styles.text}>Hello {userName},</Text>
                         <Text style={styles.text}>
-                            You&rsquo;ve used {data?.percentageUsed.toFixed(1)}% of your
+                            You&rsquo;ve used {(data?.percentageUsed ?? 0).toFixed(1)}% of your
                             monthly budget
                         </Text>
                         <Section style={styles.statsContainer}>
@@ -152,5 +182,25 @@ const styles = {
         borderRadius: "4px",
         boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)",
     },
-
+    section: {
+        marginTop: "32px",
+        padding: "20px",
+        backgroundColor: "#f9fafb",
+        borderRadius: "5px",
+        border: "1px solid #e5e7eb",
+    },
+    row: {
+        display: "flex",
+        justifyContent: "space-between",
+        padding: "12px 0",
+        borderBottom: "1px solid #e5e7eb",
+    },
+    footer: {
+        color: "#6b7280",
+        fontSize: "14px",
+        textAlign: "center",
+        marginTop: "32px",
+        paddingTop: "16px",
+        borderTop: "1px solid #e5e7eb",
+    },
 };

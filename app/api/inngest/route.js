@@ -3,6 +3,7 @@ import { serve } from "inngest/next";
 import { inngest } from "@/lib/inngest/client.js";
 import {
   checkBudgetAlerts,
+  generateMonthlyReports,
   processRecurringTransactions,
   triggerRecurringTransactions,
  
@@ -14,5 +15,6 @@ export const { GET, POST, PUT } = serve({
    checkBudgetAlerts,
    triggerRecurringTransactions,
    processRecurringTransactions,
+   generateMonthlyReports
   ],
 });
