@@ -6,6 +6,7 @@ import React from 'react'
 import AccountCard from './_components/account-card'
 import { getCurrentBudget } from '@/actions/budget'
 import { BudgetProgress } from './_components/budget-progress'
+import { DashboardOverview } from './_components/transaction-overview'
 
 
 async function DashboardPage() {

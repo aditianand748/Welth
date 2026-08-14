@@ -17,8 +17,7 @@ const serializeTransaction = (obj) => {
       
     return serialized;
     };
-
-
+    
 
 export async function createAccount(data) {
     try {
@@ -109,7 +108,7 @@ export async function getDashboardData() {
         throw new Error("User not found");
     }
 
-    const transactions = await db.transactions.findMany({
+    const transactions = await db.transaction.findMany({
         where: {userId: user.id},
         orderBy: {date: "desc"},
     });
